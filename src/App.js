@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import JSONDATA from "./MOCK_DATA.json";
 
 function App() {
+  const [search, setSearch] = useState("");
+  function handleSearch(e) {
+    console.log(e.target.value);
+    setSearch(e.target.value);
+  }
+  let filteredJSONDATA = JSONDATA.filter((obj) => {
+    if (search == "") {
+      return obj;
+    } else if (obj.first_name.toLowerCase().includes(search.toLowerCase())) {
+      return obj;
+    }
+  });
+  const JSONList = filteredJSONDATA.map((obj, index) => {
+    return <p keys={index}>{obj.first_name}</p>;
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type="search" placeholder="search..." onChange={handleSearch} />
+      <div>{JSONList}</div>
     </div>
   );
 }
